@@ -10,3 +10,5 @@ To use the script, simply run
 python box_extraction.py extract <image_path> <extraction_folder>
 ```
 All the parameters required are strings.
+
+Source for the box detection script : https://medium.com/coinmonks/a-box-detection-algorithm-for-any-image-containing-boxes-756c15d7ed26
