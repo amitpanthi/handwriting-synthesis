@@ -63,6 +63,11 @@ def threshold_image(image_path:str, cropped_dir_path:str):
     img_final_bin = cv2.erode(~img_final_bin, kernel, iterations=2) #~img_final_bin to invert back the colors
     (thresh, img_final_bin) = cv2.threshold(img_final_bin, 128, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
 
+    #Debug
+    """ cv2.imwrite("ver.jpg", ver_img)
+    cv2.imwrite("hor.jpg", hor_img)
+    cv2.imwrite("fin.jpg", img_final_bin) """
+
     #Finding all rectangular contours in our binary image
     contours, hierarchy = cv2.findContours(img_final_bin, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
@@ -71,18 +76,18 @@ def threshold_image(image_path:str, cropped_dir_path:str):
 
     #Extracting the sorted contours into a directory file
     idx = 0
+
     for c in contours:
-        # Returns the location and width,height for every contour
+        # Returns the location and width, height for every contour
         x, y, w, h = cv2.boundingRect(c)
-        if (w > 80 and h > 20) and w > 3*h:
-            idx += 1
+        idx += 1
+        if w < 250 and h < 100:
             new_img = img[y:y+h, x:x+w]
             if os.path.exists(cropped_dir_path):
                 cv2.imwrite(cropped_dir_path + str(idx) + '.png', new_img)
             else:
                 os.makedirs(cropped_dir_path)
                 cv2.imwrite(cropped_dir_path + str(idx) + '.png', new_img)
-
 
 if __name__ == "__main__":
     fire.Fire({
